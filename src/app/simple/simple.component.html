@@ -1,4 +1,4 @@
-<ng-content></ng-content>
+<!-- <ng-content></ng-content>
 <form (ngSubmit)="onLogin()" [formGroup]="loginForm">
   <div class="form-group">
   <label for="email">Email address</label>
@@ -21,4 +21,11 @@
       <button type="submit"
       [disabled]=loginForm.invalid
       class="btn btn-primary">Submit</button>
-      </form>
+      </form> -->
+
+      <button #el class="accordion" (click)="toggleHelper()">
+          <slot name="header">Default header</slot>
+          </button>
+          <div class="panel">
+          <slot name="details">Default details</slot>
+          </div>
