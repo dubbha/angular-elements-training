@@ -1,16 +1,34 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, Injector, DoBootstrap } from '@angular/core';
+import { createCustomElement } from '@angular/elements';
+import { ReactiveFormsModule } from '@angular/forms';
 
-import { AppComponent } from './app.component';
+import { SimpleComponent } from './simple/simple.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    SimpleComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    ReactiveFormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  entryComponents: [SimpleComponent]
 })
-export class AppModule { }
+export class AppModule implements DoBootstrap {
+  constructor(private injector: Injector) {}
+
+  ngDoBootstrap() {
+    // All this code can be placed to the constructor function, leaving this function empty.
+    const el = createCustomElement(SimpleComponent, { injector: this.injector });
+    // Name of custom element must include dash!
+    customElements.define('app-simple', el);
+    // This component exists in the global register of custom elements
+    // We get function.
+    console.log(customElements.get('app-simple'));
+    // This component doesn't exist in the global register of custom elements.
+    // We get undefined.
+    console.log(customElements.get('app-root'));
+  }
+}
